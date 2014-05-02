@@ -1,0 +1,305 @@
+/*
+	Minimaxing 3.1 by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+
+
+/*********************************************************************************/
+/* Global                                                                        */
+/*********************************************************************************/
+
+/* Basic */
+
+	/*
+	 * Emoji Symbols Font (c)blockworks - Kenichi Kaneko
+	 * http://emojisymbols.com/
+	 * */
+
+	@font-face {
+		font-family: emojisymbols;
+		src: url("/webfonts/EmojiSymbols-Regular.woff") format('woff');
+		text-decoration: none;
+		font-style: normal;
+	}
+
+	*,*:before,*:after{-moz-box-sizing:content-box;-webkit-box-sizing:content-box;-o-box-sizing:content-box;-ms-box-sizing:content-box;box-sizing:content-box}
+
+	body {
+		height: 100%;
+	}
+
+	body {
+		background-attachment: fixed;
+		background-image: url('../images/bg/1.jpg');
+		font-size: 10.5pt;
+		font-family: sans-serif;
+		/*background-color: #e3e9dc;*/
+		/*font-family: 'Ubuntu Condensed', sans-serif;*/
+		font-family: 'Lucida Grande', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'Meiryo', 'メイリオ', 'sans-serif', 'Apple Color Emoji', 'emojisymbols';
+		/*color: #878e83;*/
+		color: #232a1f;
+		letter-spacing: -1px;
+	}
+
+	h1,h2,h3,h4 {
+		color: #990055;
+		font-weight: normal;
+	}
+
+	h1,h2 {
+		/*text-transform: lowercase;*/
+	}
+
+		h1 #logo {
+			/*font-family: 'Monoton', cursive;*/
+			font-family: 'Nova Oval', cursive;
+			animation: upper 11s linear infinite;
+		}
+
+	h2 {
+		font-size: 1.6em;
+		letter-spacing: -1px;
+		margin-bottom: 1em;
+	}
+
+	h3,h4 {
+		color: #283121;
+		margin-bottom: 1em;
+	}
+
+	h3 {
+		font-size: 1.2em;
+		margin-bottom: 0.8em;
+	}
+
+	h4 {
+		font-size: 1em;
+	}
+
+	p, ul {
+		margin-bottom: 1.25em;
+	}
+
+	p {
+		line-height: 1.8em;
+	}
+
+	strong {
+		color: #474e43;
+	}
+
+	img.left {
+		float: left;
+		margin: 2px 1.25em 0 0;
+	}
+
+	img.top {
+		margin: 4px 0 2.25em 0;
+	}
+
+	ul {
+		padding: 0.25em 0 0 0;
+	}
+
+	a {
+		color: #990055;
+		text-decoration: underline;
+	}
+
+	a:hover {
+		text-decoration: none;
+	}
+
+	* > p:last-child {
+		margin-bottom: 0 !important;
+	}
+
+/* Reusable */
+
+	#all-wrapper {
+	}
+
+	#main {
+		background-color: rgba(255,255,255,.5);
+		height: 100%;
+		min-height: 100%;
+	}
+
+	article.blog-post {
+		position: relative;
+	}
+
+		article.blog-post .comments {
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 32px;
+			line-height: 24px;
+			padding-left: 40px;
+			background: url('images/icon-bubble.png') no-repeat;
+		}
+
+	ul.small-image-list {
+	}
+
+		ul.small-image-list li {
+			overflow: hidden;
+			margin-bottom: 1.5em;
+		}
+
+	ul.big-image-list {
+	}
+
+		ul.big-image-list li {
+			border-top: 1px solid #CCC;
+			overflow: hidden;
+			margin-bottom: 2em;
+		}
+
+	ul.link-list {
+	}
+
+		ul.link-list li {
+			border-top: solid 1px #ced0b7;
+			padding: 0.75em 0 0 0;
+			margin: 0.75em 0 0 0;
+		}
+		
+		ul.link-list li:first-child {
+			padding-top: 0;
+			margin-top: 0;
+			border-top: 0;
+		}
+
+	#counter {
+	}
+
+		#counter #tps-val {
+			color: #000000;
+			font-size: 20px;
+			font-family: Verdana;
+		}
+
+	#trend {
+		padding: 1em 0 1em 0;
+		margin: 1em 0 1em 0;
+	}
+
+
+        #tweets li {
+                border-bottom: 1px solid #878e83;
+		clear: left;
+		padding: 3px 0 3px 0;
+		position: relative;
+		line-height: 1.3em;
+		list-style: none;
+		list-style-image: none;
+		min-height:48px;
+        }
+
+		#tweets li .avatar {
+			float: left;
+			padding-left: 0px;
+		}
+
+		#tweets li .context {
+			margin-left: 55px;
+		}
+
+		#tweets li .name {
+			font-weight: bold;
+		}
+
+		#tweets li .date {
+			position: absolute;
+			top: 3px;
+			right: 10px;
+		}
+
+		#tweets li .text {
+			display: block;
+			padding-top: 5px;
+			-webkit-margin-before: 0.5em
+			-webkit-margin-after: 0.5em;
+			-webkit-margin-start: 0px;
+			-webkit-margin-end: 0px;
+		}
+
+		#tweets li .text img {
+			clear: both;
+		}
+
+        #users li {
+                border-bottom: 1px solid #878e83;
+                clear: left;
+                padding: 3px 0 3px 0;
+                position: relative;
+                line-height: 1.3em;
+                list-style: none;
+                list-style-image: none;
+                min-height:48px;
+        }
+
+                #users li .avatar {
+                        float: left;
+                        padding-left: 0px;
+                }
+
+                #users li .context {
+                        margin-left: 55px;
+                }
+
+                #users li .name {
+                        font-weight: bold;
+                }
+
+                #users li .description {
+                        display: block;
+                        padding-top: 5px;
+                        -webkit-margin-before: 0.5em
+                        -webkit-margin-after: 0.5em;
+                        -webkit-margin-start: 0px;
+                        -webkit-margin-end: 0px;
+                }
+
+                #users li .location {
+                        display: block;
+                        padding-top: 5px;
+                        -webkit-margin-before: 0.5em
+                        -webkit-margin-after: 0.5em;
+                        -webkit-margin-start: 0px;
+                        -webkit-margin-end: 0px;
+                }
+
+	.button {
+		display: inline-block;
+		padding: 15px 25px 15px 25px;
+		background-color: #007b9d;
+		background-image: -moz-linear-gradient(top, #008dad, #007b9d);
+		background-image: -webkit-linear-gradient(top, #008dad, #007b9d);
+		background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#008dad), to(#007b9d));
+		background-image: -ms-linear-gradient(top, #008dad, #007b9d);
+		background-image: -o-linear-gradient(top, #008dad, #007b9d);
+		background-image: linear-gradient(top, #008dad, #007b9d);
+		border-radius: 10px;
+		text-transform: lowercase;
+		text-decoration: none;
+		color: #fff;
+		font-size: 1.2em;
+		letter-spacing: -1px;
+		border: solid 1px #006e8b;
+		box-shadow: inset 0px 0px 0px 1px #18a8c8;
+	}
+
+	.button:hover {
+		background-color: #118eb1;
+		background-image: -moz-linear-gradient(top, #1b9fbe, #118eb1);
+		background-image: -webkit-linear-gradient(top, #1b9fbe, #118eb1);
+		background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1b9fbe), to(#118eb1));
+		background-image: -ms-linear-gradient(top, #1b9fbe, #118eb1);
+		background-image: -o-linear-gradient(top, #1b9fbe, #118eb1);
+		background-image: linear-gradient(top, #1b9fbe, #118eb1);
+		box-shadow: inset 0px 0px 0px 1px #3ecceb;
+	}

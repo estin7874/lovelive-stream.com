@@ -1,0 +1,21 @@
+{
+  "name": "nishikino",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "config": "0.4.35",
+    "ect": "*",
+    "elasticsearch": "1.5.14",
+    "express": "3.4.8",
+    "log4js": "*",
+    "mongoose": "3.8.8",
+    "mtwitter": "1.5.2",
+    "redis": "0.10.1",
+    "socket.io": "0.9.16",
+    "underscore": "*",
+    "yaml": "0.2.3"
+  }
+}

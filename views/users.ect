@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+
+<!--
+  LOVELIVE! STREAM
+  lovelive-stream.com | @estin7874
+-->
+<!--
+  Minimaxing 3.1 by HTML5 UP
+  html5up.net | @n33co
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+  <head>
+    <title>LOVELIVE! STREAM</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Nova+Oval' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="/js/jquery.bgswitcher.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/skel-panels.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <!--
+    <script src="/socket.io/socket.io.js"></script>
+    -->
+    <noscript>
+      <link rel="stylesheet" href="/css/skel-noscript.css" />
+      <link rel="stylesheet" href="/css/style.css" />
+      <link rel="stylesheet" href="/css/style-desktop.css" />
+    </noscript>
+    <!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+  </head>
+  <body id="body">
+    <div id="all-wrapper">
+      <div id="header-wrapper">
+        <div class="container">
+          <div class="row">
+            <div class="12u">
+              <header id="header">
+                <h1><a href="#" id="logo">LOVELIVE! STREAM</a></h1>
+                <nav id="nav">
+                  <a href="/#">TWEETS</a>
+                  <a href="#" class="current-page-item">USERS</a>
+                  <a href="/about#">ABOUT</a>
+                </nav>
+              </header>
+            </div>
+          </div>
+       </div>
+      </div>
+      <div id="main">
+        <div class="container">
+          <div class="row">
+            <div class="12u">
+              <section>
+                <h2 id="top-label">Recent updated users</h2>
+                <ul id="users">
+                  <% for user in @users : %>
+                    <li class="tweet">
+                      <div class="avatar"><a href="https://twitter.com/<%- user.screen_name %>"><img src="<%- user.image %>"></a></div>
+                      <div class="context"><div class="name"><a href="https://twitter.com/<%- user.screen_name %>"><%- user.name %></a></div>
+                      <div class="description"><%- user.description %></div>
+                      <div class="location"><%- user.location %></div></div><% if user.url : %> | <a href="<%- user.url %>"><%- user.url %><% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

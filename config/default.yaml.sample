@@ -1,0 +1,40 @@
+app:
+  aggregator:
+    exclude: ''
+    interval: 2100
+  counter:
+    delay: 20
+    duration_base: 5
+  title: 'sample'
+  server:
+    bind_address: '127.0.0.1'
+    port: 3000
+  session:
+    secret: 'SOME_SECRET_KEY'
+  wordcounter:
+    interval: 15
+
+elasticsearch:
+  host: 'localhost'
+  port: 9200
+
+mongo:
+  host: 'localhost'
+  port: 27017
+  db: 'twitter'
+
+redis:
+  host: 'localhost'
+  port: 6379
+
+twitter:
+  auth:
+    consumer_key: 'YOUR_CONSUMER_KEY'
+    consumer_secret: 'YOUR_CONSUMER_SECRET'
+    access_token: 'YOUR_ACCESS_TOKEN'
+    access_token_secret: 'YOUR_ACCESS_TOKEN_SECRET'
+
+  search:
+    queries: ['#lovelive']
+  filter:
+    track: ['#lovelive']
