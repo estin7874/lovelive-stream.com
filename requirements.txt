@@ -1,0 +1,10 @@
+PyYAML==3.11
+#argparse==1.1
+elasticsearch==1.0.0
+pymongo==2.7
+python-dateutil==2.2
+pytz==2014.2
+redis==2.9.1
+rq==0.3.13
+#supervisor==3.0
+tweepy==2.2
