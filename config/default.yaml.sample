@@ -3,7 +3,6 @@ app:
     exclude: ''
     interval: 2100
   counter:
-    delay: 20
     duration_base: 5
   title: 'sample'
   server:

@@ -130,7 +130,6 @@ def watch_counter(config):
     pool = redis.ConnectionPool(host=config['redis']['host'], port=config['redis']['port'], db=0)
     redis_client = redis.Redis(connection_pool=pool)
 
-    delay = config['app']['counter']['delay']
     duration = len(config['twitter']['search']['queries']) * config['app']['counter']['duration_base']
 
     while True:
