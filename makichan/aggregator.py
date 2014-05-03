@@ -14,6 +14,7 @@ import yaml
 from datetime import datetime
 import urllib
 import urllib2
+import httplib
 import base64
 import tweepy
 import redis
