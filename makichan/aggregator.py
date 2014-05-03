@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import, print_function
 
@@ -27,7 +27,7 @@ from rqtasks import update_user_info, update_user_last_tweet_at
 
 def process_on_status(status, db, redis_client, q_high, q_low, r, duration):
     if r.search(status.text, re.U):
-        #print('[warn] exclude detected' + str(status.text), file=sys.stderr)
+        # print('[warn] exclude detected' + str(status.text), file=sys.stderr)
         return
 
     # insert tweet data (also check dups)
@@ -109,7 +109,7 @@ class AppAuthHandler(tweepy.auth.AuthHandler):
 class StreamListener(tweepy.StreamListener):
 
     def __init__(self, config):
-        super(StreamListener,self).__init__()
+        super(StreamListener, self).__init__()
 
         self.r = re.compile(config['app']['aggregator']['exclude'])
 
@@ -138,7 +138,7 @@ def watch_counter(config):
         count_timestamp = str(int((utcnow_timestamp - (utcnow_timestamp % duration) - duration * 2)))
         tweet_count = redis_client.hget('tweet_count', count_timestamp)
         if tweet_count:
-            tps =  str(round(float(tweet_count) / duration, 1))
+            tps = str(round(float(tweet_count) / duration, 1))
             redis_client.publish('stream', json.dumps({'counter': tps}))
             redis_client.hdel('tweet_count', count_timestamp)
         time.sleep(duration)

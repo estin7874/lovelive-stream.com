@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import, print_function
 
@@ -8,7 +8,6 @@ import os
 import re
 import time
 import yaml
-import json
 from collections import defaultdict
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -32,15 +31,15 @@ def create_bag_of_nouns(tagger, text):
     enc_text = EXCLUDE_REGEXP.sub('', text.encode('utf-8'))
 
     node = tagger.parseToNode(enc_text)
-    nouns = []
-    pending = []
+    # nouns = []
+    # pending = []
     words = ''
     word_count = defaultdict(int)
     while node:
         features = node.feature.split(',')
-        #print(node.surface, node.posid, node.feature)
-        #if len(pending) > 0:
-        #    print('[pending]:' + ''.join(pending))
+        # print(node.surface, node.posid, node.feature)
+        # if len(pending) > 0:
+        #     print('[pending]:' + ''.join(pending))
         """
         if features[0] == '名詞':  # noun
             noun = node.surface.strip()
@@ -75,19 +74,19 @@ def create_bag_of_nouns(tagger, text):
 def fetch_statuses(db, es, start, end, q=None):
     if q:
         body = {
-          'filter': {
-            'range': {
-              'created_at': {
-                'from': start.strftime('%Y-%m-%dT%H:%M:%SZ'),
-                'to': end.strftime('%Y-%m-%dT%H:%M:%SZ')
-              }
+            'filter': {
+                'range': {
+                    'created_at': {
+                        'from': start.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                        'to': end.strftime('%Y-%m-%dT%H:%M:%SZ')
+                    }
+                }
+            },
+            'query': {
+                'match': {
+                    'text': q
+                }
             }
-          },
-          'query': {
-            'match': {
-              'text': q
-            }
-          }          
         }
         es_result = es.search(index='tweets', doc_type='tweet', body=body)
         ids = [x['_id'] for x in es_result['hits']['hits']]
@@ -100,43 +99,43 @@ def fetch_statuses(db, es, start, end, q=None):
 def count_users(es, start, end, q=None):
     """
     body = {
-      'filter': {
-        'range': {
-          'created_at': {
-            'from': start.strftime('%Y-%m-%dT%H:%M:%SZ'),
-            'to': end.strftime('%Y-%m-%dT%H:%M:%SZ')
-          }
+        'filter': {
+            'range': {
+                'created_at': {
+                    'from': start.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                    'to': end.strftime('%Y-%m-%dT%H:%M:%SZ')
+                }
+            }
+        },
+        'facets': {
+            'users': {
+                'terms': {
+                    'field': 'user_id',
+                    'size': 1000000
+                }
+            }
         }
-      },
-      'facets': {
-        'users': {
-          'terms': {
-            'field': 'user_id',
-            'size': 1000000
-          }
-        }
-      }
     }
     """
     body = {
-      'filter': {
-        'range': {
-          'created_at': {
-            'from': start.strftime('%Y-%m-%dT%H:%M:%SZ'),
-            'to': end.strftime('%Y-%m-%dT%H:%M:%SZ')
-          }
+        'filter': {
+            'range': {
+                'created_at': {
+                    'from': start.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                    'to': end.strftime('%Y-%m-%dT%H:%M:%SZ')
+                }
+            }
         }
-      }
     }
     if q:
         body['query'] = {
-          'match': {
-            'text': q
-          }
+            'match': {
+                'text': q
+            }
         }
 
     result = es.search(index='tweets', doc_type='tweet', body=body)
-    #return len(result['facets']['users']['terms'])
+    # return len(result['facets']['users']['terms'])
     return result['hits']['total']
 
 
@@ -157,7 +156,7 @@ def main():
 
     while True:
         utcnow = datetime.utcnow()
-        #start = utcnow + relativedelta(minutes=-1, seconds=-30)
+        # start = utcnow + relativedelta(minutes=-1, seconds=-30)
         start = utcnow + relativedelta(hours=-1, seconds=-30)
         end = utcnow + relativedelta(seconds=-30)
 
@@ -179,7 +178,7 @@ def main():
         dom_end = utcnow + relativedelta(hours=-1)
 
         num_all = count_users(es, num_start, num_end)
-        dom_all = count_users(es, dom_start, dom_end) 
+        dom_all = count_users(es, dom_start, dom_end)
 
         utcnow_expire = int(time.mktime((utcnow + relativedelta(hours=1)).timetuple()))
 
@@ -192,7 +191,7 @@ def main():
             # calc score
             # cf. http://sssslide.com/www.slideshare.net/dara/buzztter
             score = Decimal(count_users(es, num_start, num_end, noun)) / num_all \
-                  - Decimal(count_users(es, dom_start, dom_end, noun)) / dom_all
+                - Decimal(count_users(es, dom_start, dom_end, noun)) / dom_all
 
             if score > 0:
                 redis_client.zadd('hot_words', noun, round(float(score), 12))
@@ -207,9 +206,9 @@ def main():
         hot_words = redis_client.zrange('hot_words', 0, 19)
         for w in hot_words:
             print(w)
-        #redis_client.publish('stream', json.dumps({'hot_words': hot_words}))
+        # redis_client.publish('stream', json.dumps({'hot_words': hot_words}))
 
-        #break
+        # break
         time.sleep(config['app']['wordcounter']['interval'])
 
 if __name__ == '__main__':
