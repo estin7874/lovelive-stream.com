@@ -178,6 +178,10 @@ def agg_rest_search(config):
             print('[error] httplib error detected. %s' % str(e), file=sys.stderr)
             time.sleep(config['app']['aggregator']['interval'] / 1000)
             continue
+        except httplib.ssl.SSLError as e:
+            print('[error] httplib.ssl error detected. %s' % str(e), file=sys.stderr)
+            time.sleep(config['app']['aggregator']['interval'] / 1000)
+            continue
 
         for status in response:
             process_on_status(status, db, redis_client, q_high, q_low, r, counter_duration)
