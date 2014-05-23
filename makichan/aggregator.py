@@ -166,10 +166,11 @@ def agg_rest_search(config):
 
     while True:
         try:
+            q = ' OR '.join(['"%s"' % x for x in queries[index].split(' OR ')])
             if index in since_ids:
-                response = api.search(q=queries[index], result_type='recent', count=100, since_id=since_ids[index])
+                response = api.search(q=q, result_type='recent', count=100, since_id=since_ids[index])
             else:
-                response = api.search(q=queries[index], result_type='recent', count=100)
+                response = api.search(q=q, result_type='recent', count=100)
         except tweepy.error.TweepError as e:
             print('[error] tweepy error detected. %s' % str(e), file=sys.stderr)
             time.sleep(config['app']['aggregator']['interval'] / 1000)
@@ -188,6 +189,7 @@ def agg_rest_search(config):
 
         if len(response) > 0:
             since_ids[index] = response[0].id
+        index = index + 1
         if index == len(queries) - 1:
             index = 0
         time.sleep(config['app']['aggregator']['interval'] / 1000)
