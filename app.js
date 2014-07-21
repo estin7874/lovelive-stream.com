@@ -3,13 +3,12 @@
 // require('v8-profiler');
 
 var version = '0.0.1'
+  , config = require('config')
   , express = require('express')
   , log4js = require('log4js')
   , http = require('http')
   , redis = require('redis')
-  , RedisStore = require('socket.io/lib/stores/redis')
   , path = require('path')
-  , config = require('config')
   , ECT = require('ect')
 
   // routes
@@ -24,7 +23,8 @@ var version = '0.0.1'
   // express
   , app = express()
   , server = app.listen(config.app.server.port)
-  , io = require('socket.io').listen(server, {'log level': 1})
+  , io = require('socket.io')(server)
+  , RedisAdapter = require('socket.io-redis')({'host': config.redis.port, 'port': config.redis.host})
 
   // redis
   , subscriber = redis.createClient(config.redis.port, config.redis.host)
@@ -61,17 +61,11 @@ app.get('/', routes.index(config));
 app.get('/users', routes.users(config));
 app.get('/about', routes.about(config));
 
-var redisConf = {host: config.redis.host, port: config.redis.port};
-io.set('store', new RedisStore({
-  redisPub: redisConf,
-  redisSub: redisConf,
-  redisClient: redisConf
-}));
-
 // redis pub/sub subscribe
 subscriber.subscribe('stream');
 
 // emit updates
+io.adapter(RedisAdapter);
 io.sockets.setMaxListeners(0);
 io.sockets.on('connection', function(socket) {
   subscriber.on('message', function(channel, message) {
