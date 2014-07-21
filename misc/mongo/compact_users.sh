@@ -24,4 +24,4 @@ var total_a = db.users.totalSize();
 
 print('Storage Size: ' + tojson(storage_a));
 print('TotalSize: ' + tojson(total_a));
-" | $MONGO_HOST:$MONGO_PORT/$MONGO_DBNAME
+" | mongo $MONGO_HOST:$MONGO_PORT/$MONGO_DBNAME
