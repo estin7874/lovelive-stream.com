@@ -3,10 +3,14 @@
 // require('v8-profiler');
 
 var version = '0.0.1'
+  , bodyParser = require('body-parser')
   , config = require('config')
+  , errorhandler = require('errorhandler')
   , express = require('express')
   , log4js = require('log4js')
   , http = require('http')
+  , methodOverride = require('method-override')
+  , morgan = require('morgan')
   , redis = require('redis')
   , path = require('path')
   , ECT = require('ect')
@@ -30,30 +34,28 @@ var version = '0.0.1'
   , subscriber = redis.createClient(config.redis.port, config.redis.host)
 
 // all environments
-app.configure(function(){
-  app.set('domain', config.app.server.bind_address || 'localhost');
-  app.set('port', process.env.PORT || config.app.server.port || 3000);
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'ect');
-  app.engine('.ect', renderer.render)
-  app.use(express.logger('dev'));
-  app.use(express.json());
-  app.use(express.urlencoded());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
-});
+app.set('domain', config.app.server.bind_address || 'localhost');
+app.set('port', process.env.PORT || config.app.server.port || 3000);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ect');
+app.engine('.ect', renderer.render);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride());
+app.use(morgan('combined'));
+app.use(express.static(path.join(__dirname, 'public')));
 
+var env = process.env.NODE_ENV || 'development';
 // development only
-app.configure('development', function() {
-  app.use(express.errorHandler({
+if ('development' == env) {
+  app.use(errorhandler({
     dumpExceptions: true,
     showStack: true
   }));
-});
-app.configure('production', function() {
+}
+if ('production' == env) {
   app.use(express.errorHandler());
-});
+}
 
 // routes
 routes.config = config;
