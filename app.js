@@ -2,7 +2,7 @@
 
 // require('v8-profiler');
 
-var version = '0.0.1'
+var version = '0.0.2'
   , bodyParser = require('body-parser')
   , config = require('config')
   , errorhandler = require('errorhandler')
