@@ -27,7 +27,7 @@ from rqtasks import update_user_info, update_user_last_tweet_at
 
 def process_on_status(status, db, redis_client, q_high, q_low, r, duration):
     if r.search(status.text, re.U):
-        # print('[warn] exclude detected' + str(status.text), file=sys.stderr)
+        # print('[warn] exclude detected: ' + status.text.encode('utf-8').replace("\n", ""), file=sys.stderr)
         return
 
     # insert tweet data (also check dups)
