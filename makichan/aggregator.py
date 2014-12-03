@@ -26,7 +26,7 @@ from rqtasks import update_user_info, update_user_last_tweet_at
 
 
 def process_on_status(status, db, redis_client, q_high, q_low, r, duration):
-    if r.search(status.text, re.U):
+    if r.search(status.text):
         # print('[warn] exclude detected: ' + status.text.encode('utf-8').replace("\n", ""), file=sys.stderr)
         return
 
@@ -111,7 +111,7 @@ class StreamListener(tweepy.StreamListener):
     def __init__(self, config):
         super(StreamListener, self).__init__()
 
-        self.r = re.compile(config['app']['aggregator']['exclude'])
+        self.r = re.compile(unicode(config['app']['aggregator']['exclude']))
 
         self.mongo_client = pymongo.MongoClient(config['mongo']['host'], config['mongo']['port'])
         self.db = self.mongo_client[config['mongo']['db']]
@@ -148,7 +148,7 @@ def agg_rest_search(config):
     auth = AppAuthHandler(config['twitter']['auth']['consumer_key'], config['twitter']['auth']['consumer_secret'])
     api = tweepy.API(auth)
 
-    r = re.compile(config['app']['aggregator']['exclude'])
+    r = re.compile(unicode(config['app']['aggregator']['exclude']))
 
     mongo_client = pymongo.MongoClient(config['mongo']['host'], config['mongo']['port'])
     db = mongo_client[config['mongo']['db']]
