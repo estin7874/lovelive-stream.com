@@ -25,8 +25,8 @@ import multiprocessing
 from rqtasks import update_user_info, update_user_last_tweet_at
 
 
-def process_on_status(status, db, redis_client, q_high, q_low, r, duration):
-    if r.search(status.text):
+def process_on_status(status, db, redis_client, q_high, q_low, blacklist_users, r_exclude_words, duration):
+    if status.user.id in blacklist_users or r_exclude_words.search(status.text):
         # print('[warn] exclude detected: ' + status.text.encode('utf-8').replace("\n", ""), file=sys.stderr)
         return
 
@@ -111,7 +111,8 @@ class StreamListener(tweepy.StreamListener):
     def __init__(self, config):
         super(StreamListener, self).__init__()
 
-        self.r = re.compile(unicode(config['app']['aggregator']['exclude']))
+        self.blacklist_users = config['app']['aggregator']['blacklist_users']
+        self.r_exclude_words = re.compile(unicode(config['app']['aggregator']['exclude_words']))
 
         self.mongo_client = pymongo.MongoClient(config['mongo']['host'], config['mongo']['port'])
         self.db = self.mongo_client[config['mongo']['db']]
@@ -124,7 +125,7 @@ class StreamListener(tweepy.StreamListener):
         self.counter_duration = len(config['twitter']['search']['queries']) * config['app']['counter']['duration_base']
 
     def on_status(self, status):
-        process_on_status(status, self.db, self.redis_client, self.q_high, self.q_low, self.r, self.counter_duration)
+        process_on_status(status, self.db, self.redis_client, self.q_high, self.q_low, self.blacklist_users, self.r_exclude_words, self.counter_duration)
 
 
 def watch_counter(config):
@@ -148,7 +149,8 @@ def agg_rest_search(config):
     auth = AppAuthHandler(config['twitter']['auth']['consumer_key'], config['twitter']['auth']['consumer_secret'])
     api = tweepy.API(auth)
 
-    r = re.compile(unicode(config['app']['aggregator']['exclude']))
+    blacklist_users = config['app']['aggregator']['blacklist_users']
+    r_exclude_words = re.compile(unicode(config['app']['aggregator']['exclude_words']))
 
     mongo_client = pymongo.MongoClient(config['mongo']['host'], config['mongo']['port'])
     db = mongo_client[config['mongo']['db']]
@@ -185,7 +187,7 @@ def agg_rest_search(config):
             continue
 
         for status in response:
-            process_on_status(status, db, redis_client, q_high, q_low, r, counter_duration)
+            process_on_status(status, db, redis_client, q_high, q_low, blacklist_users, r_exclude_words, counter_duration)
 
         if len(response) > 0:
             since_ids[index] = response[0].id
