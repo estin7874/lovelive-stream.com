@@ -58,7 +58,8 @@
                 また、最近ユーザプロフィールを更新したユーザ（あるいは当サイトのユーザデータベースに含まれていなかったユーザで、最近ツイートしたユーザ）の一覧も見ることができます。<br />
                 TwitterのREST APIとStreaming APIの両方の検索APIを利用しており、後述するキーワードをパラメータとした取得結果を、WebSocketを利用して再配信します。<br />
                 お使いのブラウザでWebSocketが利用できない場合、xhr-pollingで代用します。<br />
-                バックエンドはNode.jsのSocket.IO、フロントエンドはnginxで、さらにキャッシュエンジンとしてVarnishを利用しています。
+                バックエンドはNode.jsのSocket.IO、フロントエンドはnginxで、さらにキャッシュエンジンとしてVarnishを利用しています。<br />
+                このサイトのソースコードは、<a href="https://github.com/estin7874/lovelive-stream.com">GitHub</a>で公開しています。
                 </p>
                 <h3>キーワードの選定方針</h3>
                 <p>
