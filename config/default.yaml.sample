@@ -2,6 +2,7 @@ app:
   aggregator:
     blacklist_users: []
     exclude_words: ''
+    exclude_urls: ''
     interval: 2100
   counter:
     duration_base: 5
